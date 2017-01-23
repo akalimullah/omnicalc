@@ -3,25 +3,16 @@ class CalculationsController < ApplicationController
   def word_count
     @text = params[:user_text]
     @special_word = params[:user_word]
+    spaceless_text =  @text.gsub(/[\s]+/,"")
+    downcase_words = @text.downcase.split(/[\s]+/)
 
-    # ================================================================================
-    # Your code goes below.
-    # The text the user input is in the string @text.
-    # The special word the user input is in the string @special_word.
-    # ================================================================================
+    @character_count_with_spaces = @text.length
 
+    @character_count_without_spaces = spaceless_text.length
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @word_count = downcase_words.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
-
-    @word_count = "Replace this string with your answer."
-
-    @occurrences = "Replace this string with your answer."
-
-    # ================================================================================
-    # Your code goes above.
-    # ================================================================================
+    @occurrences = downcase_words.count(@special_word.downcase)
 
     render("word_count.html.erb")
   end
@@ -31,18 +22,7 @@ class CalculationsController < ApplicationController
     @years = params[:number_of_years].to_i
     @principal = params[:principal_value].to_f
 
-    # ================================================================================
-    # Your code goes below.
-    # The annual percentage rate the user input is in the decimal @apr.
-    # The number of years the user input is in the integer @years.
-    # The principal value the user input is in the decimal @principal.
-    # ================================================================================
-
     @monthly_payment = "Replace this string with your answer."
-
-    # ================================================================================
-    # Your code goes above.
-    # ================================================================================
 
     render("loan_payment.html.erb")
   end
