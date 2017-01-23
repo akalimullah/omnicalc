@@ -22,7 +22,8 @@ class CalculationsController < ApplicationController
     @years = params[:number_of_years].to_i
     @principal = params[:principal_value].to_f
 
-    @monthly_payment = "Replace this string with your answer."
+    decimal_apr = @apr / 100
+    @monthly_payment = (@principal * (decimal_apr / 12)) / (1 - (1 + decimal_apr / 12) ** (-12*@years))
 
     render("loan_payment.html.erb")
   end
