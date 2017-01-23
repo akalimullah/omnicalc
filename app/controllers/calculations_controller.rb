@@ -37,22 +37,17 @@ class CalculationsController < ApplicationController
     day_in_secs = 24*60*60
     hour_in_secs = 60*60
 
-    @years = (difference / year_in_secs).floor
-    remainder = difference % year_in_secs
+    @years = (difference / year_in_secs)
 
-    @weeks = (remainder / week_in_secs).floor
-    remainder = remainder % week_in_secs
+    @weeks = (difference / week_in_secs)
 
-    @days = (remainder / day_in_secs).floor
-    remainder = remainder % day_in_secs
+    @days = (difference / day_in_secs)
 
-    @hours = (remainder / hour_in_secs).floor
-    remainder = remainder % hour_in_secs
+    @hours = (difference / hour_in_secs)
 
-    @minutes = (remainder / 60).floor
-    remainder = remainder % 60
+    @minutes = (difference / 60).floor
 
-    @seconds = remainder
+    @seconds = difference
 
     render("time_between.html.erb")
   end
@@ -60,36 +55,52 @@ class CalculationsController < ApplicationController
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
 
-    # ================================================================================
-    # Your code goes below.
-    # The numbers the user input are in the array @numbers.
-    # ================================================================================
+    @sorted_numbers = @numbers.sort
 
-    @sorted_numbers = "Replace this string with your answer."
+    @count = @numbers.length
 
-    @count = "Replace this string with your answer."
+    @minimum = @sorted_numbers[0]
 
-    @minimum = "Replace this string with your answer."
+    @maximum = @sorted_numbers[@count - 1]
 
-    @maximum = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @range = "Replace this string with your answer."
+    if @count.odd? == true
+      @median = @sorted_numbers[(@count / 2).floor]
+    else
+      @mediam = (@sorted_numbers[(@count / 2)] + @sorted_numbers[(@count / 2) - 1]) / 2
+    end
 
-    @median = "Replace this string with your answer."
+    @sum = 0
+    @sorted_numbers.each do |num|
+      @sum += num
+    end
 
-    @sum = "Replace this string with your answer."
+    @mean = @sum / @count
 
-    @mean = "Replace this string with your answer."
+    sse = 0
+    @sorted_numbers.each do |num|
+      sse += (num - @mean) ** 2
+    end
+    @variance = sse/@count
 
-    @variance = "Replace this string with your answer."
+    @standard_deviation = @variance ** 0.5
 
-    @standard_deviation = "Replace this string with your answer."
+    frequencies = {}
+    @sorted_numbers.each do |num|
+      frequencies[num] = @sorted_numbers.count(num)
+    end
+    sorted_frequencies = frequencies.sort_by{|num, frequency| frequency}
 
-    @mode = "Replace this string with your answer."
+    current_index = sorted_frequencies.length - 1
+    next_index = current_index - 1
 
-    # ================================================================================
-    # Your code goes above.
-    # ================================================================================
+    @mode = sorted_frequencies[current_index][0].to_s
+    while (sorted_frequencies[current_index][1] == sorted_frequencies[next_index][1]) && (next_index >= 0)
+      @mode =  @mode + ", " + sorted_frequencies[next_index][0].to_s
+      current_index = next_index
+      next_index = current_index - 1
+    end
 
     render("descriptive_statistics.html.erb")
   end
