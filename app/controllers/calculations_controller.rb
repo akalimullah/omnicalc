@@ -68,7 +68,7 @@ class CalculationsController < ApplicationController
     if @count.odd? == true
       @median = @sorted_numbers[(@count / 2).floor]
     else
-      @mediam = (@sorted_numbers[(@count / 2)] + @sorted_numbers[(@count / 2) - 1]) / 2
+      @median = (@sorted_numbers[(@count / 2)] + @sorted_numbers[(@count / 2) - 1]) / 2
     end
 
     @sum = 0
