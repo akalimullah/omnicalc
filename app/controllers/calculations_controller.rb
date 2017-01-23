@@ -31,26 +31,28 @@ class CalculationsController < ApplicationController
   def time_between
     @starting = Chronic.parse(params[:starting_time])
     @ending = Chronic.parse(params[:ending_time])
+    difference = @ending - @starting
+    year_in_secs = 365*24*60*60
+    week_in_secs = 7*24*60*60
+    day_in_secs = 24*60*60
+    hour_in_secs = 60*60
 
-    # ================================================================================
-    # Your code goes below.
-    # The start time is in the Time @starting.
-    # The end time is in the Time @ending.
-    # Note: Ruby stores Times in terms of seconds since Jan 1, 1970.
-    #   So if you subtract one time from another, you will get an integer
-    #   number of seconds as a result.
-    # ================================================================================
+    @years = (difference / year_in_secs).floor
+    remainder = difference % year_in_secs
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @weeks = (remainder / week_in_secs).floor
+    remainder = remainder % week_in_secs
 
-    # ================================================================================
-    # Your code goes above.
-    # ================================================================================
+    @days = (remainder / day_in_secs).floor
+    remainder = remainder % day_in_secs
+
+    @hours = (remainder / hour_in_secs).floor
+    remainder = remainder % hour_in_secs
+
+    @minutes = (remainder / 60).floor
+    remainder = remainder % 60
+
+    @seconds = remainder
 
     render("time_between.html.erb")
   end
